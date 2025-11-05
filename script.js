@@ -1,3 +1,9 @@
+//Sistema de pontuação recorde
+
+let highScore = localStorage.getItem('marioHighScore') || 0;
+const highScoreDisplay = document.getElementById('highScore');
+highScoreDisplay.textContent = highScore;
+
 // Selecionando elementos visuais do jogo
 const mario = document.querySelector('.mario'); //Seleciona pela classe
 const pipe = document.querySelector('.pipe');
@@ -16,7 +22,10 @@ const jump = () => {
     if (!isGameOver) {
         //Adiciona a classe 'jump' que ativa a animação CSS
         mario.classList.add('jump');
-
+        jumpSound.play(); //Toca o som
+        setTimeout(() => {
+            mario.classList.remove('jump');
+        }, 500);
         //remove a classe após 500ms (duração da animação)
         setTimeout(() => {
             mario.classList.remove('jump');
@@ -95,6 +104,12 @@ console.log("Posição do Mario:", marioPosition);
 
 if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 80) {
     console.log("Colisão Detectada!")
+    gameOverSound.play(); //Som de game over
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('marioHighScore', highScore);
+        alert('Novo recorde!');
+    }
 }
 
 //3. Teste de pontuação
@@ -111,4 +126,3 @@ if (score > 300 && score < 301) {
 
 const jumpSound = document.getElementById('jumpSound')
 const gameOverSound = document.getElementById('gameOverSound')
-
